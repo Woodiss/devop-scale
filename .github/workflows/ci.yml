@@ -32,29 +32,12 @@ jobs:
           name: test-output-node-${{ matrix.node-version }}
           path: app/test-output.txt
 
-  # Stage 2 : Build image Docker
   build:
     needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: docker/setup-buildx-action@v3
-      - uses: docker/build-push-action@v5
-        with:
-          context: ./app
-          push: false
-          load: true
-          tags: devops-app:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Lancer le conteneur en arrière-plan
-        run: docker run -d -p 3000:3000 --name devops-app devops-app:${{ github.sha }}
-      - name: Attendre que l'application démarre
-        run: sleep 5
-      - name: Smoke test local - /health
-        run: curl -f http://localhost:3000/health || exit 1
-      - name: Smoke test local - /metrics
-        run: curl -f http://localhost:3000/metrics || exit 1
+    uses: ./.github/workflows/reusable-docker.yml
+    with:
+      image-name: devops-app
+      context: ./app
 
   # Stage 3 : Scan de sécurité
   security:
