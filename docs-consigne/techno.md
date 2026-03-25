@@ -19,3 +19,7 @@ Voici l'ordre logique d'utilisation dans un pipeline de développement (du code 
 5. Grafana (Outil de visualisation et de tableaux de bord)
    - À quoi ça sert : Il récupère les bases de données chiffrées illisibles (issues de bases comme Prometheus) et les transforme en graphiques, courbes et compteurs visuels faciles à interpréter.
    - Exemple d'utilisation : Un grand écran dans le bureau de l'équipe technique affichant une courbe dynamique du nombre d'erreurs sur le site web, qui devient rouge et clignote si un serveur tombe en panne.
+
+6. Terraform (Outil d'infrastructure en tant que code / IaC)
+   - À quoi ça sert : C'est un outil qui permet de créer, modifier et détruire des ressources (serveurs, réseaux, bases de données) sous forme de code. Au lieu de configurer l'infrastructure à la main sur une interface web, on écrit un plan que Terraform s'assure d'appliquer de manière fiable et reproductible.
+   - Exemple d'utilisation : Écrire un fichier de configuration pour déployer en une seule commande 3 serveurs pour l'application, 1 pour la base de données de manière sécurisée, et être capable de recréer cette même infrastructure exacte pour un environnement de test.

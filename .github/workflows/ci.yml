@@ -54,11 +54,29 @@ jobs:
           exit-code: '1'
           format: 'table'
 
-  # Stage 4 : Deploy (simulé)
-  deploy:
+  # Stage 4 : Deploy Staging (simulé)
+  deploy-staging:
     needs: [build, security]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Tools (Terraform, Kubectl)
+        uses: ./.github/actions/setup-tools
+      - name: Use secrets
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          API_KEY: ${{ secrets.API_KEY }}
+        run: |
+          echo "Secrets are masked in logs"
+          echo "DB_PASSWORD length: ${#DB_PASSWORD}"
+      - run: echo "Deploying to staging..."
+
+  # Stage 5 : Deploy Production (simulé)
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
     environment: production
     steps:
-      - run: echo "Deploying version ${{ github.sha }}..."
+      - run: echo "Deploying to production..."

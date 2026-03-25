@@ -1,0 +1,28 @@
+services:
+  ansible:
+    build: .
+    container_name: ansible-controller
+    volumes:
+      - .:/ansible
+      # On donne accès au moteur Docker hôte pour utiliser l'ansible_connection: docker
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - ansible-net
+
+  node1:
+    image: ubuntu:22.04
+    container_name: ansible-node1
+    command: /bin/sh -c "apt-get update && apt-get install -y python3 sudo && sleep infinity"
+    networks:
+      - ansible-net
+
+  node2:
+    image: ubuntu:22.04
+    container_name: ansible-node2
+    command: /bin/sh -c "apt-get update && apt-get install -y python3 sudo && sleep infinity"
+    networks:
+      - ansible-net
+
+networks:
+  ansible-net:
+    name: ansible-net

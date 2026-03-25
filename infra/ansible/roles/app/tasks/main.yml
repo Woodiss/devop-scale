@@ -1,0 +1,4 @@
+---
+- name: Dummy task pour le role app
+  debug:
+    msg: "Rôle application (vide pour l'instant)"
